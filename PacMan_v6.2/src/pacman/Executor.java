@@ -9,6 +9,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Random;
+
+import pacman.controller.meera_udani.BFS_Controller;
+import pacman.controller.meera_udani.DFS_Controller;
+import pacman.controller.meera_udani.IterativeDeepening_Controller;
 import pacman.controllers.Controller;
 import pacman.controllers.HumanController;
 import pacman.controllers.KeyBoardInput;
@@ -62,7 +66,11 @@ public class Executor
 		//run the game in asynchronous mode.
 		boolean visual=true;
 //		exec.runGameTimed(new NearestPillPacMan(),new AggressiveGhosts(),visual);
-		exec.runGameTimed(new StarterPacMan(),new StarterGhosts(),visual);
+	    exec.runGameTimed(new DFS_Controller(),new StarterGhosts(),visual);
+		exec.runGameTimed(new BFS_Controller(),new StarterGhosts(),visual);
+		exec.runGameTimed(new IterativeDeepening_Controller(),new StarterGhosts(),visual);
+		//exec.runExperiment(new StarterPacMan(),new StarterGhosts(), 50);
+		
 //		exec.runGameTimed(new HumanController(new KeyBoardInput()),new StarterGhosts(),visual);	
 		//*/
 		
