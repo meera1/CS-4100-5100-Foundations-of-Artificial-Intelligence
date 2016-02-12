@@ -54,24 +54,13 @@ public class DFS_Controller extends Controller<MOVE>{
 		{
 	            MOVE[] allMoves=Constants.MOVE.values();
 	            int highScore = -1;
-	            
-	            //Queue<PacManNode> queue = new LinkedList<PacManNode>();
-	           
-	           // queue.add(rootGameState);
-//	            System.out.println(pmnode.depth + " depth at the start");
 	            Stack<PacManNode> stack = new Stack<PacManNode>();
 	            stack.push(pmnode);
-
-			   //System.out.println("Adding Node at Depth: " + rootGameState.depth);
-	                
-	            
-	            
-	            
 	            while(!stack.isEmpty())
 	                {
-	            		System.out.println("stack not empty");
-	                    PacManNode currentNode = (PacManNode) stack.peek();
-	                    //System.out.println("Removing Node at Depth: " + currentNode.depth);
+	            		
+	                    PacManNode currentNode = (PacManNode) stack.peek(); // just checking the top of stack node say PacManNode N1, not popping 
+	                    
 	                    
 	                    if(currentNode.depth >= maxdepth)
 	                    {
@@ -88,22 +77,39 @@ public class DFS_Controller extends Controller<MOVE>{
 	                    {
 	                    	
 	                        //GET CHILDREN
-	                        for(MOVE m: allMoves)
+	                        for(MOVE m: allMoves)  // for all the children of N1, repeat the following steps
 	                        	
 	                        	
-	                        {
+	                            {
 	                        	
-	                        //	System.out.println("Trying Move in DFS function: " + m);
-	                            Game gameCopy = currentNode.gameState.copy();
-	                            gameCopy.advanceGame(m, ghosts.getMove(gameCopy, 0));
-	                            PacManNode node = new PacManNode(gameCopy, currentNode.depth+1);
-	                            stack.push(node);
-	                            highScore = dfs_meera(node,maxdepth);
+	                            // Working on the game copy
+	                            Game gameCopy = currentNode.gameState.copy(); 
+	                            
+	                            
+	                            // advance the game to find out the next state of the game if the move 'm' would be taken
+	                            gameCopy.advanceGame(m, ghosts.getMove(gameCopy, 0)); 
+	                             
+	                            // create a node PacManNode of N1's children at a depth + 1
+	                            PacManNode node = new PacManNode(gameCopy, currentNode.depth+1);  
+	                            
+	                            // push its first child taken into consideration
+	                            stack.push(node); 
+	                            
+	                            // call the dfs function on the child pushed in stack, this is a recursive call,
+	                            // so we will call the dfs function on the child of the child currently being explored,
+	                            // this will happen till we reach the maxDepth so that now the nodes will be popped,
+	                            // and the high score will be returned after comparing it with the game score
+	                            // NOTE: this recursive call and the pop that follows it, replicated the dfs feature of the also
+	                            highScore = dfs_meera(node,maxdepth);  
+	                            stack.pop(); // this pop is to pop the child that has been explored, i.e child of child of child till ax depth 
 	                        }
+	                        
+	                       
 	                       }
+	                    
+	                    stack.pop(); // this will pop the node N1 that we took as an example above on line 63
 	                    }
-	            
-	           // stack.pop();
+	           
 	            return highScore;
 	          }
 

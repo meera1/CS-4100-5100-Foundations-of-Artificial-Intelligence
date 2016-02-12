@@ -1,3 +1,12 @@
+/*
+ * This program is the same as the dfs program implemented.
+ * The only difference in this one is that the maxDepth, that is the
+ * depth till which the pacman finds the high move and high score
+ * recursively is incremented from 0 till a limited depth of 7 for every 
+ * possible move from the root
+ */
+
+
 package pacman.controller.meera_udani;
 
 import java.util.Stack;
@@ -22,45 +31,46 @@ public class IterativeDeepening_Controller extends Controller<MOVE> {
         
         for(int maxdepth = 0; maxdepth <= 7; maxdepth++)
         {
-        	System.out.println("Currently at depth "+maxdepth + " for the iterative functionality" );
         	for(MOVE m: allMoves)
             {
+
+                
+                	//System.out.println("Currently at depth "+ maxdepth + " for the iterative functionality" );
             	
-                //System.out.println("Trying Move: " + m);
-                Game gameCopy = game.copy();
-                Game gameAtM = gameCopy; // 
-                gameAtM.advanceGame(m, ghosts.getMove(gameAtM, timeDue));
-                Stack<PacManNode> stack = new Stack<PacManNode>();
-	            stack.push(new PacManNode(gameAtM, 0));
-                int tempHighScore = this.iterative_dfs(new PacManNode(gameAtM, 0), maxdepth, stack);
-                
-                if(highScore < tempHighScore)
-                {
-                    highScore = tempHighScore;
-                    highMove = m;
-                }
-                
-                System.out.println("Trying Move: " + m + ", Score: " + tempHighScore);
-               
+	                //System.out.println("Trying Move: " + m);
+	                Game gameCopy = game.copy();
+	                Game gameAtM = gameCopy; // 
+	                gameAtM.advanceGame(m, ghosts.getMove(gameAtM, timeDue));
+	                int tempHighScore = this.iterative_dfs(new PacManNode(gameAtM, 0), maxdepth);
+	                
+	                if(highScore < tempHighScore)
+	                {
+	                    highScore = tempHighScore;
+	                    highMove = m;
+	                }
+	                
+	                //System.out.println("Trying Move: " + m + ", Score: " + tempHighScore);
+	               
             }
         }
         
         
-        System.out.println("High Score: " + highScore + ", High Move:" + highMove);
+        //System.out.println("High Score: " + highScore + ", High Move:" + highMove);
         
         return highMove;
 	}
 	
 	
-	public int iterative_dfs(PacManNode rootGameState, int maxDepth, Stack<PacManNode> s)
+	public int iterative_dfs(PacManNode rootGameState, int maxDepth)
 	{
 		MOVE[] allMoves=Constants.MOVE.values();
         int highScore = -1;
-
+        Stack<PacManNode> s = new Stack<PacManNode>();
+        s.push(rootGameState);
         while(!s.isEmpty())
         {
-        	PacManNode currentNode = s.pop();
-        	System.out.println("current node popped " + currentNode);
+        	PacManNode currentNode = s.peek();
+        	//System.out.println("current node popped " + currentNode);
         	
         	if(currentNode.depth >= maxDepth)
         	{
@@ -75,16 +85,16 @@ public class IterativeDeepening_Controller extends Controller<MOVE> {
         	{
         		for(MOVE m: allMoves)
         		{
-        			System.out.println("Trying Move in DFS function: " + m);
+        			//System.out.println("Trying Move in DFS function: " + m);
                     Game gameCopy = currentNode.gameState.copy();
                     gameCopy.advanceGame(m, ghosts.getMove(gameCopy, 0));
                     PacManNode node = new PacManNode(gameCopy, currentNode.depth+1);
                     s.push(node);
-                    highScore = iterative_dfs(currentNode,maxDepth, s);
-                    
+                    highScore = iterative_dfs(node, maxDepth);
+                    s.pop();
         		}
         	}
-        	
+        	s.pop();
         }
         return highScore;
 	}
