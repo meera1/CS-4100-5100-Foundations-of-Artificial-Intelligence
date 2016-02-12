@@ -10,9 +10,6 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Random;
 
-import pacman.controller.meera_udani.BFS_Controller;
-import pacman.controller.meera_udani.DFS_Controller;
-import pacman.controller.meera_udani.IterativeDeepening_Controller;
 import pacman.controllers.Controller;
 import pacman.controllers.HumanController;
 import pacman.controllers.KeyBoardInput;
@@ -26,6 +23,9 @@ import pacman.controllers.examples.RandomNonRevPacMan;
 import pacman.controllers.examples.RandomPacMan;
 import pacman.controllers.examples.StarterGhosts;
 import pacman.controllers.examples.StarterPacMan;
+import pacman.controllers.meera_udani.BFS_Controller;
+import pacman.controllers.meera_udani.DFS_Controller;
+import pacman.controllers.meera_udani.IterativeDeepening_Controller;
 import pacman.game.Game;
 import pacman.game.GameView;
 
