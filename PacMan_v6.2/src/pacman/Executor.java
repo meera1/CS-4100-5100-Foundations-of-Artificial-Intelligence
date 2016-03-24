@@ -24,9 +24,12 @@ import pacman.controllers.examples.RandomPacMan;
 import pacman.controllers.examples.StarterGhosts;
 import pacman.controllers.examples.StarterPacMan;
 import pacman.controllers.meera_udani.AStar_Controller;
+import pacman.controllers.meera_udani.AlhpaBeta_Controller; 
 import pacman.controllers.meera_udani.BFS_Controller;
 import pacman.controllers.meera_udani.DFS_Controller;
+import pacman.controllers.meera_udani.GA_Controller;
 import pacman.controllers.meera_udani.IterativeDeepening_Controller;
+import pacman.controllers.meera_udani.MiniMax_Controller;
 import pacman.controllers.meera_udani.SimulatedAnnealing_Controller;
 import pacman.controllers.meera_udani.SimulatedAnnealing_Controller;
 import pacman.game.Game;
@@ -72,11 +75,17 @@ public class Executor
 //	    exec.runGameTimed(new DFS_Controller(),new StarterGhosts(),visual);
 //		exec.runGameTimed(new BFS_Controller(),new StarterGhosts(),visual);
 //		exec.runGameTimed(new IterativeDeepening_Controller(),new StarterGhosts(),visual);
+//		exec.runGameTimed(new MiniMax_Controller(),new StarterGhosts(),visual);
+		//exec.runGameTimed(new AlhpaBeta_Controller(),new StarterGhosts(),visual);
+		exec.runGameTimed(new GA_Controller(),new StarterGhosts(),visual);
 //		exec.runExperiment(new StarterPacMan(),new StarterGhosts(), 50);
 //		exec.runExperiment(new IterativeDeepening_Controller(),new StarterGhosts(), 50);
 //		exec.runGameTimed(new AStar_Controller(),new StarterGhosts(),visual);
 //		exec.runExperiment(new AStarController(),new StarterGhosts(),10);
-		exec.runGameTimed(new SimulatedAnnealing_Controller(),new StarterGhosts(),visual);
+//		exec.runGameTimed(new SimulatedAnnealing_Controller(),new StarterGhosts(),visual);
+//		exec.runGameTimed(new MiniMax_Controller(),new StarterGhosts(),visual);
+		
+		
 		
 		
 //		exec.runGameTimed(new HumanController(new KeyBoardInput()),new StarterGhosts(),visual);	

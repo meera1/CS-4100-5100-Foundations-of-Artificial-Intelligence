@@ -22,4 +22,8 @@ public class PacManNode
         this.gameState = game;
         this.depth = depth;
     }
+    public PacManNode(Game game)
+    {
+    	this.gameState = game;
+    }
 }

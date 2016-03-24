@@ -1,5 +1,7 @@
 package pacman.game;
 
+import pacman.game.Constants.MOVE;
+
 /**
  * This class contains the enumerations for the moves and the ghosts as well as
  * as the constants of the game. If you should change the constants, bear in mind
@@ -25,6 +27,18 @@ public final class Constants
 		NEUTRAL	{ public MOVE opposite(){return MOVE.NEUTRAL;	};};	
 		
 		public abstract MOVE opposite();
+
+		public static MOVE valueOf(int populationNo) {
+			// TODO Auto-generated method stub
+			switch (populationNo) {
+            case 0:  return MOVE.UP;
+            case 1:  return MOVE.RIGHT;
+            case 2:  return MOVE.DOWN;
+            case 3:  return MOVE.LEFT;
+            default: return MOVE.NEUTRAL;
+        }
+			
+		}
 	};
 	
 	/**

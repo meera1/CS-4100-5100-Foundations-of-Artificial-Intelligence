@@ -4,18 +4,15 @@
  * and open the template in the editor.
  */
 package pacman.controllers.meera_udani;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.Random;
+
 import pacman.controllers.Controller;
 import pacman.controllers.examples.StarterGhosts;
 import pacman.game.Constants;
-import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
-import pacman.game.internal.Node;
 
 /**
  *
