@@ -25,7 +25,15 @@ public class MiniMax_Controller extends Controller<MOVE> {
 
 		public MOVE getMove(Game game, long timeDue) {
 			Random rnd = new Random();
-			MOVE[] allMoves = MOVE.values();
+			MOVE[] allMoves;
+			MOVE pacmanLastMove = game.getPacmanLastMoveMade();
+			int currIndex = game.getPacmanCurrentNodeIndex();
+			if (pacmanLastMove != null){
+				allMoves = game.getPossibleMoves(currIndex,pacmanLastMove);
+				}
+			else{
+				allMoves = game.getPossibleMoves(currIndex);
+				}
 			
 
 			double highScore = -1;
@@ -55,7 +63,15 @@ public class MiniMax_Controller extends Controller<MOVE> {
 		public double minimax (PacManNode rootGameState, int depth, boolean max)
 		{
 			double bestValue; 
-			MOVE[] allMoves = Constants.MOVE.values();
+			MOVE[] allMoves;
+			MOVE pacmanLastMove = rootGameState.gameState.getPacmanLastMoveMade();
+			int currIndex = rootGameState.gameState.getPacmanCurrentNodeIndex();
+			if (pacmanLastMove != null){
+				allMoves = rootGameState.gameState.getPossibleMoves(currIndex,pacmanLastMove);
+				}
+			else{
+				allMoves = rootGameState.gameState.getPossibleMoves(currIndex);
+				}
 			
 			if(rootGameState.depth == 7 || rootGameState.depth == maxdepth)
 				return rootGameState.gameState.getScore();

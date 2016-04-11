@@ -36,14 +36,14 @@ public class AlhpaBeta_Controller extends Controller<MOVE>{
 			allMoves = game.getPossibleMoves(currIndex);
 			}
 
-		int highScore = -1;
+		double highScore = -1.0;
 		MOVE highMove = null;
 
 		for (MOVE m : allMoves) {
 			Game gameCopy = game.copy();
 			Game gameAtM = gameCopy;
 			gameAtM.advanceGame(m, ghosts.getMove(gameAtM, timeDue));
-			int tempHighScore = this.alphaBeta(new PacManNode(gameAtM), 7, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,true);
+			double tempHighScore = this.alphaBeta(new PacManNode(gameAtM), 7, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,true);
 			if (highScore < tempHighScore) {
 				highScore = tempHighScore;
 				highMove = m;
@@ -59,7 +59,7 @@ public class AlhpaBeta_Controller extends Controller<MOVE>{
 		return highMove;
 	}
 
-	public int alphaBeta(PacManNode rootGameState, int maxdepth, double alpha, double beta, boolean maxPlayer)
+	public double alphaBeta(PacManNode rootGameState, int maxdepth, double alpha, double beta, boolean maxPlayer)
 	{
 		MOVE[] allMoves;
 		MOVE pacmanLastMove = rootGameState.gameState.getPacmanLastMoveMade();
@@ -77,7 +77,7 @@ public class AlhpaBeta_Controller extends Controller<MOVE>{
 		}
 		if (maxPlayer)
 		{
-			int v = Integer.MIN_VALUE;
+			double v = Double.NEGATIVE_INFINITY;
 			for (MOVE m : allMoves)
 			{
 				Game gameCopy = rootGameState.gameState.copy();
@@ -91,7 +91,7 @@ public class AlhpaBeta_Controller extends Controller<MOVE>{
 			return v;
 		} else
 		{
-			int v = Integer.MAX_VALUE;
+			double v = Double.POSITIVE_INFINITY;
 			for (MOVE m : allMoves)
 			{
 				Game gameCopy = rootGameState.gameState.copy();

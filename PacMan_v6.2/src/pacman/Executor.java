@@ -28,12 +28,16 @@ import pacman.controllers.meera_udani.AlhpaBeta_Controller;
 import pacman.controllers.meera_udani.BFS_Controller;
 import pacman.controllers.meera_udani.DFS_Controller;
 import pacman.controllers.meera_udani.GA_Controller;
+import pacman.controllers.meera_udani.ID3_Controller;
 import pacman.controllers.meera_udani.IterativeDeepening_Controller;
+import pacman.controllers.meera_udani.KNN_Controller;
 import pacman.controllers.meera_udani.MiniMax_Controller;
 import pacman.controllers.meera_udani.SimulatedAnnealing_Controller;
 import pacman.controllers.meera_udani.SimulatedAnnealing_Controller;
 import pacman.game.Game;
 import pacman.game.GameView;
+import pacman.game.Constants.GHOST;
+import pacman.game.Constants.MOVE;
 
 import static pacman.game.Constants.*;
 
@@ -76,14 +80,16 @@ public class Executor
 //		exec.runGameTimed(new BFS_Controller(),new StarterGhosts(),visual);
 //		exec.runGameTimed(new IterativeDeepening_Controller(),new StarterGhosts(),visual);
 //		exec.runGameTimed(new MiniMax_Controller(),new StarterGhosts(),visual);
-		//exec.runGameTimed(new AlhpaBeta_Controller(),new StarterGhosts(),visual);
-		exec.runGameTimed(new GA_Controller(),new StarterGhosts(),visual);
+//		exec.runGameTimed(new ID3_Controller(),new StarterGhosts(),visual);
+//		exec.runGameTimed(new AlhpaBeta_Controller(),new StarterGhosts(),visual);
+//		exec.runGameTimed(new GA_Controller(),new StarterGhosts(),visual);
 //		exec.runExperiment(new StarterPacMan(),new StarterGhosts(), 50);
 //		exec.runExperiment(new IterativeDeepening_Controller(),new StarterGhosts(), 50);
 //		exec.runGameTimed(new AStar_Controller(),new StarterGhosts(),visual);
 //		exec.runExperiment(new AStarController(),new StarterGhosts(),10);
 //		exec.runGameTimed(new SimulatedAnnealing_Controller(),new StarterGhosts(),visual);
 //		exec.runGameTimed(new MiniMax_Controller(),new StarterGhosts(),visual);
+		exec.runGameTimed(new KNN_Controller(5),new StarterGhosts(),visual);
 		
 		
 		
@@ -128,11 +134,83 @@ public class Executor
 		for(int i=0;i<trials;i++)
 		{
 			game=new Game(rnd.nextLong());
-			
 			while(!game.gameOver())
 			{
-		        game.advanceGame(pacManController.getMove(game.copy(),System.currentTimeMillis()+DELAY),
+				
+				/*
+		         * Now is the code for writing the code to write some values of functions and the game state to a 
+		         * file so that it acts as a training data for some algorithms 
+		         * START	
+		         * */	
+				double shortestDistance = Double.POSITIVE_INFINITY; // first column in training data file
+				GHOST closestGhostFromPacman = GHOST.BLINKY;	
+				int current1 = game.getPacmanCurrentNodeIndex();
+				for(GHOST ghost : GHOST.values()){				
+					int index = game.getGhostCurrentNodeIndex(ghost);
+					double distance = game.getDistance(current1, index, DM.MANHATTAN);
+					if(distance < shortestDistance){
+						shortestDistance = distance;
+						closestGhostFromPacman = ghost;
+					}
+					
+				}
+				int closestGhostEdibleValue = booleanToNumber(game.isGhostEdible(closestGhostFromPacman)); // 2nd value in file
+				
+				int [] activePowerPills = game.getActivePowerPillsIndices();
+				double closestPowerPillDistanceFromPacman = Double.MAX_VALUE;
+				if(activePowerPills.length > 0){
+					for(int j = 0 ; j < activePowerPills.length; j++){
+						double distance1 = game.getDistance(current1, activePowerPills[j], DM.MANHATTAN);
+						if(distance1 < closestPowerPillDistanceFromPacman){
+							closestPowerPillDistanceFromPacman = distance1;  // 3rd value
+						}
+					}
+				}
+				else
+				{
+					// make the closestPowerPillDistanceFromPacman index to 0;
+					closestPowerPillDistanceFromPacman = 0;
+				}
+				// END
+				MOVE move1 = pacManController.getMove(game.copy(),System.currentTimeMillis()+DELAY);	// 8th value
+		        game.advanceGame(move1,
 		        		ghostController.getMove(game.copy(),System.currentTimeMillis()+DELAY));
+		        /*
+		         * Now is the code for writing the code to write some values of functions and the game state to a 
+		         * file so that it acts as a training data for some algorithms 
+		         * START
+		         * */
+		        int pacmanEatenValue = booleanToNumber(game.wasPacManEaten()) ;  // 4th value
+		        int ghostEatenValue = booleanToNumber(game.wasGhostEaten(closestGhostFromPacman)) ;  // 5th value
+		        int pacmanLastMove = moveToNumber(game.getPacmanLastMoveMade()); // 6th value
+		        int nearestGhostLastMoveMade = moveToNumber(game.getGhostLastMoveMade(closestGhostFromPacman)); // 7th Value
+		        		        
+		        try 
+		        {
+		            FileOutputStream outS= new FileOutputStream("training-data1.txt", true);
+		            PrintWriter pw=new PrintWriter(outS);
+
+		            pw.print(shortestDistance + "\t");
+		            pw.print(closestGhostEdibleValue + "\t");
+		            pw.print(closestPowerPillDistanceFromPacman + "\t");
+		            pw.print(pacmanEatenValue + "\t");
+		            pw.print(ghostEatenValue + "\t");
+		            pw.print(pacmanLastMove + "\t");
+		            pw.print(nearestGhostLastMoveMade + "\t");
+		            pw.print(move1 + "\t");
+		            pw.println();
+		            pw.flush();
+		            pw.close();
+		            outS.close();
+
+		        } 
+		        catch (IOException e)
+		        {
+		            System.out.println("Could not save data!");	
+		        }
+		        // END
+		       
+		        
 			}
 			
 			avgScore+=game.getScore();
@@ -142,6 +220,25 @@ public class Executor
 		System.out.println(avgScore/trials);
     }
 	
+	private int booleanToNumber(boolean booleanValue) {
+		if(booleanValue)
+			return 1;
+		else
+			return -1;
+	}
+	
+	private int moveToNumber (MOVE move){
+		switch (move) {
+        case UP:  return 1;
+        case RIGHT:  return 2;
+        case DOWN:  return 3;
+        case LEFT:  return 4;
+        case NEUTRAL: return 0;
+        default: return 0;
+    }
+		
+	}
+
 	/**
 	 * Run a game in asynchronous mode: the game waits until a move is returned. In order to slow thing down in case
 	 * the controllers return very quickly, a time limit can be used. If fasted gameplay is required, this delay
