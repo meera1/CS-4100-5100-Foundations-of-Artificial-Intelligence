@@ -29,7 +29,8 @@ public class KNN_Controller extends Controller<MOVE>{
 	}
 
 	public static StarterGhosts ghosts = new StarterGhosts();
-	ArrayList<DataPoint> trainingData = new ArrayList<DataPoint>();
+	public ArrayList<DataPoint> trainingData = new ArrayList<DataPoint>();
+	
 	public void fileRead(){
 		try {
 			BufferedReader in = new BufferedReader(new FileReader("training-data.txt"));
@@ -75,11 +76,11 @@ public class KNN_Controller extends Controller<MOVE>{
 
 		Collections.sort(distanceWithMove, new DistanceIndexComparator());
 		List<DistanceIndex> sub =  distanceWithMove.subList(0, N);
-		MOVE finalMove = getfinalMove(sub);
+		MOVE finalMove = getMajorityNeighbor(sub);
 		return finalMove;
 	}
 
-	private MOVE getfinalMove(List<DistanceIndex> sub) {
+	private MOVE getMajorityNeighbor(List<DistanceIndex> sub) {
 
 		HashMap<MOVE, Integer> map = new HashMap<>();
 		map.put(MOVE.UP, 0);
