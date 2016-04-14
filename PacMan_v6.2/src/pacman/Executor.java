@@ -32,6 +32,7 @@ import pacman.controllers.meera_udani.ID3_Controller;
 import pacman.controllers.meera_udani.IterativeDeepening_Controller;
 import pacman.controllers.meera_udani.KNN_Controller;
 import pacman.controllers.meera_udani.MiniMax_Controller;
+import pacman.controllers.meera_udani.Perceptron_Controller;
 import pacman.controllers.meera_udani.SimulatedAnnealing_Controller;
 import pacman.controllers.meera_udani.SimulatedAnnealing_Controller;
 import pacman.game.Game;
@@ -89,7 +90,10 @@ public class Executor
 //		exec.runExperiment(new AStarController(),new StarterGhosts(),10);
 //		exec.runGameTimed(new SimulatedAnnealing_Controller(),new StarterGhosts(),visual);
 //		exec.runGameTimed(new MiniMax_Controller(),new StarterGhosts(),visual);
-		exec.runGameTimed(new KNN_Controller(5),new StarterGhosts(),visual);
+//		exec.runGameTimed(new KNN_Controller(5),new StarterGhosts(),visual);
+		exec.runGameTimed(new Perceptron_Controller(),new StarterGhosts(),visual);
+		
+		
 		
 		
 		
