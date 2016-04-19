@@ -36,7 +36,16 @@ public class AStar_Controller extends Controller<MOVE>
 	@Override
 	public MOVE getMove(Game game, long timeDue)
 	{
-        MOVE[] allMoves=MOVE.values();
+//        MOVE[] allMoves=MOVE.values();
+    
+        MOVE[] allMoves;
+		MOVE pacmanLastMove = game.getPacmanLastMoveMade();
+		int currIndex = game.getPacmanCurrentNodeIndex();
+		if (pacmanLastMove != null) {
+			allMoves = game.getPossibleMoves(currIndex, pacmanLastMove);
+		} else {
+			allMoves = game.getPossibleMoves(currIndex);
+		}
     
         int highScore = -1;
         MOVE highMove = null;
@@ -57,11 +66,11 @@ public class AStar_Controller extends Controller<MOVE>
                 highMove = m;
             }
             
-            System.out.println("Trying Move: " + m + ", Score: " + tempHighScore);
+//            System.out.println("Trying Move: " + m + ", Score: " + tempHighScore);
            
         }
         
-        System.out.println("High Score: " + highScore + ", High Move:" + highMove);
+//        System.out.println("High Score: " + highScore + ", High Move:" + highMove);
           return highMove;        
 	}
 	
@@ -98,6 +107,7 @@ public class AStar_Controller extends Controller<MOVE>
                     gameCopy.advanceGame(m, ghosts.getMove(gameCopy, 0));
                     AStarPacManNode childNode = new AStarPacManNode(gameCopy,pmnode.costFromStart+1,0, pmnode.depth+1);
                     int currentNodeHeuristic = AstarHeuristic(gameCopy, childNode);
+//                    int currentNodeHeuristic = 0;
                     if((boolean) (pmnode.costFromStart+ childNode.costFromStart + currentNodeHeuristic < costfunction))
                     	{	// a function in A star algorithm that is similar to 'fun = cost + heuristic'
                     		// depending which value, that particular child will be explored
@@ -123,7 +133,6 @@ public class AStar_Controller extends Controller<MOVE>
                 }
             }
         }
-        
         return highScore;
 	}
 

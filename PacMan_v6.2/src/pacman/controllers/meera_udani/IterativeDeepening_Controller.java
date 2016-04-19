@@ -24,7 +24,15 @@ public class IterativeDeepening_Controller extends Controller<MOVE> {
 	
 	
 	public MOVE getMove(Game game, long timeDue) {
-		MOVE[] allMoves=MOVE.values();
+//		MOVE[] allMoves=MOVE.values();
+		MOVE[] allMoves;
+ 		MOVE pacmanLastMove = game.getPacmanLastMoveMade();
+ 		int currIndex = game.getPacmanCurrentNodeIndex();
+ 		if (pacmanLastMove != null) {
+ 			allMoves = game.getPossibleMoves(currIndex, pacmanLastMove);
+ 		} else {
+ 			allMoves = game.getPossibleMoves(currIndex);
+ 		}
         
         int highScore = -1;
         MOVE highMove = null;

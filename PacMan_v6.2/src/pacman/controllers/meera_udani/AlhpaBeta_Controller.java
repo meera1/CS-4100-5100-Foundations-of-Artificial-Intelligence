@@ -48,13 +48,7 @@ public class AlhpaBeta_Controller extends Controller<MOVE>{
 				highScore = tempHighScore;
 				highMove = m;
 			}
-			
-			System.out.println("Trying Move: " + m + ", Score: "
-					+ tempHighScore);
 		}
-
-		System.out.println("High Score: " + highScore + ", High Move:"
-				+ highMove);
 		
 		return highMove;
 	}

@@ -1,19 +1,10 @@
 package pacman.controllers.meera_udani;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 import java.util.Random;
 
 import pacman.controllers.Controller;
 import pacman.controllers.examples.StarterGhosts;
-import pacman.game.Constants;
-import pacman.game.Constants.DM;
-import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
-import pacman.game.internal.Node;
-import pacman.controllers.examples.StarterPacMan;
 import pacman.controllers.meera_udani.PacManNode;
 
 public class MiniMax_Controller extends Controller<MOVE> {
@@ -24,7 +15,6 @@ public class MiniMax_Controller extends Controller<MOVE> {
 		public static StarterGhosts ghosts = new StarterGhosts();
 
 		public MOVE getMove(Game game, long timeDue) {
-			Random rnd = new Random();
 			MOVE[] allMoves;
 			MOVE pacmanLastMove = game.getPacmanLastMoveMade();
 			int currIndex = game.getPacmanCurrentNodeIndex();
@@ -49,13 +39,7 @@ public class MiniMax_Controller extends Controller<MOVE> {
 					highScore = tempHighScore;
 					highMove = m;
 				}
-				
-				System.out.println("Trying Move: " + m + ", Score: "
-						+ tempHighScore);
 			}
-
-			System.out.println("High Score: " + highScore + ", High Move:"
-					+ highMove);
 			return highMove;
 		}
 

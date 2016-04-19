@@ -62,7 +62,7 @@ public class Perceptron_Controller extends Controller<MOVE> {
         int maxMove = findMax(predictionMap);
         MOVE move = numberToMove(maxMove);
         MOVE correctMove = checkMove(move, gameAtM);
-        System.out.println("Move predicted by controller "+ move);
+//        System.out.println("Move predicted by controller "+ move);
         return correctMove;
 	}
 	

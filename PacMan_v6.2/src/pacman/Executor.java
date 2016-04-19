@@ -84,15 +84,15 @@ public class Executor
 //		exec.runGameTimed(new ID3_Controller(),new StarterGhosts(),visual);
 //		exec.runGameTimed(new AlhpaBeta_Controller(),new StarterGhosts(),visual);
 //		exec.runGameTimed(new GA_Controller(),new StarterGhosts(),visual);
-//		exec.runExperiment(new StarterPacMan(),new StarterGhosts(), 50);
-//		exec.runExperiment(new IterativeDeepening_Controller(),new StarterGhosts(), 50);
+//		exec.runExperiment(new StarterPacMan(),new StarterGhosts(), 5);
+		exec.runExperiment(new SimulatedAnnealing_Controller(),new StarterGhosts(), 10);
 //		exec.runGameTimed(new AStar_Controller(),new StarterGhosts(),visual);
 //		exec.runExperiment(new AStarController(),new StarterGhosts(),10);
 //		exec.runGameTimed(new SimulatedAnnealing_Controller(),new StarterGhosts(),visual);
 //		exec.runGameTimed(new MiniMax_Controller(),new StarterGhosts(),visual);
-//		exec.runGameTimed(new KNN_Controller(5),new StarterGhosts(),visual);
-		exec.runGameTimed(new Perceptron_Controller(),new StarterGhosts(),visual);
-		
+//		exec.runGameTimed(new KNN_Controller(15),new StarterGhosts(),visual);
+//		exec.runGameTimed(new Perceptron_Controller(),new StarterGhosts(),visual);
+//		exec.runGameTimed(new HumanController(new KeyBoardInput()),new StarterGhosts(),visual);
 		
 		
 		
@@ -128,102 +128,31 @@ public class Executor
      * @param ghostController The Ghosts controller
      * @param trials The number of trials to be executed
      */
-    public void runExperiment(Controller<MOVE> pacManController,Controller<EnumMap<GHOST,MOVE>> ghostController,int trials)
-    {
-    	double avgScore=0;
-    	
-    	Random rnd=new Random(0);
-		Game game;
-		
-		for(int i=0;i<trials;i++)
-		{
-			game=new Game(rnd.nextLong());
-			while(!game.gameOver())
+	 public void runExperiment(Controller<MOVE> pacManController,Controller<EnumMap<GHOST,MOVE>> ghostController,int trials)
+	    {
+	    	double avgScore=0;
+	    	
+	    	Random rnd=new Random(0);
+			Game game;
+			
+			for(int i=0;i<trials;i++)
 			{
+				game=new Game(rnd.nextLong());
 				
-				/*
-		         * Now is the code for writing the code to write some values of functions and the game state to a 
-		         * file so that it acts as a training data for some algorithms 
-		         * START	
-		         * */	
-				double shortestDistance = Double.POSITIVE_INFINITY; // first column in training data file
-				GHOST closestGhostFromPacman = GHOST.BLINKY;	
-				int current1 = game.getPacmanCurrentNodeIndex();
-				for(GHOST ghost : GHOST.values()){				
-					int index = game.getGhostCurrentNodeIndex(ghost);
-					double distance = game.getDistance(current1, index, DM.MANHATTAN);
-					if(distance < shortestDistance){
-						shortestDistance = distance;
-						closestGhostFromPacman = ghost;
-					}
-					
-				}
-				int closestGhostEdibleValue = booleanToNumber(game.isGhostEdible(closestGhostFromPacman)); // 2nd value in file
-				
-				int [] activePowerPills = game.getActivePowerPillsIndices();
-				double closestPowerPillDistanceFromPacman = Double.MAX_VALUE;
-				if(activePowerPills.length > 0){
-					for(int j = 0 ; j < activePowerPills.length; j++){
-						double distance1 = game.getDistance(current1, activePowerPills[j], DM.MANHATTAN);
-						if(distance1 < closestPowerPillDistanceFromPacman){
-							closestPowerPillDistanceFromPacman = distance1;  // 3rd value
-						}
-					}
-				}
-				else
+				while(!game.gameOver())
 				{
-					// make the closestPowerPillDistanceFromPacman index to 0;
-					closestPowerPillDistanceFromPacman = 0;
+			        game.advanceGame(pacManController.getMove(game.copy(),System.currentTimeMillis()+DELAY),
+			        		ghostController.getMove(game.copy(),System.currentTimeMillis()+DELAY));
 				}
-				// END
-				MOVE move1 = pacManController.getMove(game.copy(),System.currentTimeMillis()+DELAY);	// 8th value
-		        game.advanceGame(move1,
-		        		ghostController.getMove(game.copy(),System.currentTimeMillis()+DELAY));
-		        /*
-		         * Now is the code for writing the code to write some values of functions and the game state to a 
-		         * file so that it acts as a training data for some algorithms 
-		         * START
-		         * */
-		        int pacmanEatenValue = booleanToNumber(game.wasPacManEaten()) ;  // 4th value
-		        int ghostEatenValue = booleanToNumber(game.wasGhostEaten(closestGhostFromPacman)) ;  // 5th value
-		        int pacmanLastMove = moveToNumber(game.getPacmanLastMoveMade()); // 6th value
-		        int nearestGhostLastMoveMade = moveToNumber(game.getGhostLastMoveMade(closestGhostFromPacman)); // 7th Value
-		        		        
-		        try 
-		        {
-		            FileOutputStream outS= new FileOutputStream("training-data1.txt", true);
-		            PrintWriter pw=new PrintWriter(outS);
-
-		            pw.print(shortestDistance + "\t");
-		            pw.print(closestGhostEdibleValue + "\t");
-		            pw.print(closestPowerPillDistanceFromPacman + "\t");
-		            pw.print(pacmanEatenValue + "\t");
-		            pw.print(ghostEatenValue + "\t");
-		            pw.print(pacmanLastMove + "\t");
-		            pw.print(nearestGhostLastMoveMade + "\t");
-		            pw.print(move1 + "\t");
-		            pw.println();
-		            pw.flush();
-		            pw.close();
-		            outS.close();
-
-		        } 
-		        catch (IOException e)
-		        {
-		            System.out.println("Could not save data!");	
-		        }
-		        // END
-		       
-		        
+				
+				avgScore+=game.getScore();
+//				System.out.println(i+"\t"+game.getScore());
 			}
 			
-			avgScore+=game.getScore();
-			System.out.println(i+"\t"+game.getScore());
-		}
-		
-		System.out.println(avgScore/trials);
-    }
-	
+			System.out.println(avgScore/trials);
+	    }
+	 
+	 
 	private int booleanToNumber(boolean booleanValue) {
 		if(booleanValue)
 			return 1;

@@ -17,8 +17,14 @@ public class DFS_Controller extends Controller<MOVE>{
 		
 		public MOVE getMove(Game game,long timeDue)
 		{
-	            
-	            MOVE[] allMoves=Constants.MOVE.values();
+	            MOVE[] allMoves;
+	    		MOVE pacmanLastMove = game.getPacmanLastMoveMade();
+	    		int currIndex = game.getPacmanCurrentNodeIndex();
+	    		if (pacmanLastMove != null) {
+	    			allMoves = game.getPossibleMoves(currIndex, pacmanLastMove);
+	    		} else {
+	    			allMoves = game.getPossibleMoves(currIndex);
+	    		}
 	        
 	            int highScore = -1;
 	            MOVE highMove = null;
@@ -27,7 +33,7 @@ public class DFS_Controller extends Controller<MOVE>{
 	           
 	            for(MOVE m: allMoves)
 	            {
-	                System.out.println("Trying Move: " + m);
+//	                System.out.println("Trying Move: " + m);
 	                Game gameCopy = game.copy();
 	                Game gameAtM = gameCopy;
 	                gameAtM.advanceGame(m, ghosts.getMove(gameAtM, timeDue));
@@ -39,10 +45,11 @@ public class DFS_Controller extends Controller<MOVE>{
 	                    highMove = m;
 	                }
 	                
-	                System.out.println("Trying Move: " + m + ", Score: " + tempHighScore);
+	                //System.out.println("Trying Move: " + m + ", Score: " + tempHighScore);
 	            }
 	            
-	            System.out.println("High Score: " + highScore + ", High Move:" + highMove);
+	            //System.out.println("High Score: " + highScore + ", High Move:" + highMove);
+	              
 	              return highMove;
 	                
 		}
@@ -109,7 +116,6 @@ public class DFS_Controller extends Controller<MOVE>{
 	                    
 	                    stack.pop(); // this will pop the node N1 that we took as an example above on line 63
 	                    }
-	           
 	            return highScore;
 	          }
 

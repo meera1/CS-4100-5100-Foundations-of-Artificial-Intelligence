@@ -56,9 +56,32 @@ public class KNN_Controller extends Controller<MOVE>{
 			double currentGameFeatures [] = getCurrentGameFeatures(gameAtM);
 			DataPoint currentGame = new DataPoint(currentGameFeatures);
 			MOVE knnMove = calculateMove(currentGame, trainingData);
-			return knnMove;
+			MOVE correctMove = checkMove(knnMove, gameAtM);
+			return correctMove;
 		}
 	}
+	
+	public MOVE checkMove(MOVE move, Game game){
+		MOVE[] allMoves;
+		MOVE pacmanLastMove = game.getPacmanLastMoveMade();
+		int currIndex = game.getPacmanCurrentNodeIndex();
+		if (pacmanLastMove != null) {
+			allMoves = game.getPossibleMoves(currIndex, pacmanLastMove);
+			boolean b = false;
+			for(int i = 0; i < allMoves.length; i++){
+				if(move == allMoves[i])
+					b = true;
+				}
+			if(b == true)
+				return move;
+			else return allMoves[0];
+		} else {
+			allMoves = game.getPossibleMoves(currIndex);
+			return allMoves[0];
+		}
+
+	}
+	
 
 	private MOVE calculateMove(DataPoint currentGamePoint, ArrayList<DataPoint> trainingData) {
 		// TODO Auto-generated method stub
