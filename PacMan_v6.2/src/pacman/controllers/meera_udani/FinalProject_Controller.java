@@ -65,7 +65,7 @@ public class FinalProject_Controller extends Controller<MOVE>
 		int minDistace = Integer.MAX_VALUE;
 		for (int i = 0; i< powerPills.length; i++) {
 			minDistace = Integer.min(game.getManhattanDistance(current, powerPills[i]),minDistace);
-			if(minDistace == 1 && game.isPowerPillStillAvailable(i)) {
+			if((minDistace == 1 || minDistace == -1)  && game.isPowerPillStillAvailable(i)) {
 				for(GHOST ghost : GHOST.values()) {
 					if(game.getGhostEdibleTime(ghost)==0 && game.getGhostLairTime(ghost)==0){
 						if(game.getShortestPathDistance(current,game.getGhostCurrentNodeIndex(ghost))<MIN_DISTANCE1) {
