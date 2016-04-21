@@ -25,8 +25,10 @@ public class FinalProject_Controller extends Controller<MOVE>
 
 	private static int counter = 1;
 
-	public MOVE getMove(Game game,long timeDue)
+	public MOVE getMove(Game gameAtm,long timeDue)
 	{		
+		Game gameCopy = gameAtm.copy();
+        Game game = gameCopy;
 		counter++;
 		int current=game.getPacmanCurrentNodeIndex();
 
