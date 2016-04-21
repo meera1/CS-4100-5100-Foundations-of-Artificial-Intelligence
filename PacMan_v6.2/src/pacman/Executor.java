@@ -1,5 +1,8 @@
 package pacman;
 
+import static pacman.game.Constants.DELAY;
+import static pacman.game.Constants.INTERVAL_WAIT;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -12,35 +15,12 @@ import java.util.Random;
 
 import pacman.controllers.Controller;
 import pacman.controllers.HumanController;
-import pacman.controllers.KeyBoardInput;
-import pacman.controllers.examples.AggressiveGhosts;
-import pacman.controllers.examples.Legacy;
-import pacman.controllers.examples.Legacy2TheReckoning;
-import pacman.controllers.examples.NearestPillPacMan;
-import pacman.controllers.examples.NearestPillPacManVS;
-import pacman.controllers.examples.RandomGhosts;
-import pacman.controllers.examples.RandomNonRevPacMan;
-import pacman.controllers.examples.RandomPacMan;
 import pacman.controllers.examples.StarterGhosts;
-import pacman.controllers.examples.StarterPacMan;
-import pacman.controllers.meera_udani.AStar_Controller;
-import pacman.controllers.meera_udani.AlhpaBeta_Controller; 
-import pacman.controllers.meera_udani.BFS_Controller;
-import pacman.controllers.meera_udani.DFS_Controller;
-import pacman.controllers.meera_udani.GA_Controller;
-import pacman.controllers.meera_udani.ID3_Controller;
-import pacman.controllers.meera_udani.IterativeDeepening_Controller;
-import pacman.controllers.meera_udani.KNN_Controller;
-import pacman.controllers.meera_udani.MiniMax_Controller;
-import pacman.controllers.meera_udani.Perceptron_Controller;
-import pacman.controllers.meera_udani.SimulatedAnnealing_Controller;
-import pacman.controllers.meera_udani.SimulatedAnnealing_Controller;
-import pacman.game.Game;
-import pacman.game.GameView;
+import pacman.controllers.meera_udani.FinalProject_Controller;
 import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
-
-import static pacman.game.Constants.*;
+import pacman.game.Game;
+import pacman.game.GameView;
 
 /**
  * This class may be used to execute the game in timed or un-timed modes, with or without
@@ -84,10 +64,12 @@ public class Executor
 //		exec.runGameTimed(new ID3_Controller(),new StarterGhosts(),visual);
 //		exec.runGameTimed(new AlhpaBeta_Controller(),new StarterGhosts(),visual);
 //		exec.runGameTimed(new GA_Controller(),new StarterGhosts(),visual);
-//		exec.runExperiment(new StarterPacMan(),new StarterGhosts(), 5);
-		exec.runExperiment(new SimulatedAnnealing_Controller(),new StarterGhosts(), 10);
+//		exec.runGameTimed(new StarterPacMan(),new StarterGhosts(), visual);
+		exec.runExperiment(new FinalProject_Controller(),new StarterGhosts(), 1);
 //		exec.runGameTimed(new AStar_Controller(),new StarterGhosts(),visual);
-//		exec.runExperiment(new AStarController(),new StarterGhosts(),10);
+//		exec.runGameTimed(new FinalProject_ControllerTry(),new StarterGhosts(),visual);
+//		exec.runGameTimed(new New(),new StarterGhosts(),visual);
+//		exec.runExperiment(new AStar_Controller(),new StarterGhosts(),30);
 //		exec.runGameTimed(new SimulatedAnnealing_Controller(),new StarterGhosts(),visual);
 //		exec.runGameTimed(new MiniMax_Controller(),new StarterGhosts(),visual);
 //		exec.runGameTimed(new KNN_Controller(15),new StarterGhosts(),visual);

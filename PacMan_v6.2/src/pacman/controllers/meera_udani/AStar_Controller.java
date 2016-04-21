@@ -24,12 +24,12 @@ public class AStar_Controller extends Controller<MOVE>
 		int powerPills [] = currentGameState.getActivePowerPillsIndices(); 
 		// declare an array of length of the active power pills
 		//int manhattanDistanceFromPowerPills [] = new int [powerPills.length];
-		int totalDistance = 0;
+		int minDistace = Integer.MAX_VALUE;
 		for (int i = 0; i< powerPills.length; i++)
 		{
-			totalDistance += currentGameState.getManhattanDistance(current, powerPills[i]);
+			minDistace = Math.min(currentGameState.getManhattanDistance(current, powerPills[i]),minDistace);
 		}
-		return totalDistance;
+		return minDistace;
 		
 	}
 
@@ -98,7 +98,7 @@ public class AStar_Controller extends Controller<MOVE>
                           highScore = score;
             }
         	else
-            {   int costfunction = 0;
+            {   int costfunction = Integer.MAX_VALUE;
             	MOVE nextMove = null;
             	
         		for(MOVE m: allMoves)
