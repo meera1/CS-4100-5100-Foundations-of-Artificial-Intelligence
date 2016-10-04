@@ -4,4 +4,4 @@ having performance at par with the provided framework.
 
 Check out the different controllers implemnted along with the final project under: 
 
-CS-4100-5100-Foundations-of-Artificial-Intelligence/PacMan_v6.2/src/pacman/controllers/meera_udani/
+<b>CS-4100-5100-Foundations-of-Artificial-Intelligence/PacMan_v6.2/src/pacman/controllers/meera_udani/<b>
